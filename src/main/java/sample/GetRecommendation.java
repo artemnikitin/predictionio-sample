@@ -1,3 +1,5 @@
+package sample;
+
 import io.prediction.Client;
 import utility.Config;
 

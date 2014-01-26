@@ -35,6 +35,10 @@ public class Config {
     public static String getSimEngine(){
         return getProperty("default.simengine");
     }
+
+    public static String pathToMovieLensData(){
+        return getProperty("data.movielens");
+    }
 	  
 	  
 }

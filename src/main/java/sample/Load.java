@@ -1,5 +1,7 @@
+package sample;
+
 import io.prediction.Client;
-import model.TestData;
+import sample.model.TestData;
 import org.apache.commons.io.FileUtils;
 import utility.Config;
 

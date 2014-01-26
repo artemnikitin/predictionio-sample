@@ -1,4 +1,6 @@
-import model.TestData;
+package sample;
+
+import sample.model.TestData;
 import org.apache.commons.io.FileUtils;
 import utility.RandomGeneration;
 
