@@ -36,7 +36,6 @@ public class U2I {
                 String user = tokenizer.nextToken();
                 String movie = tokenizer.nextToken();
                 int rating = Integer.parseInt(tokenizer.nextToken());
-                //System.out.println(user+" "+movie+" "+rating);
 
                 try {
                     client.identify(user);

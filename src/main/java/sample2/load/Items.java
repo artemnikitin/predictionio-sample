@@ -36,8 +36,6 @@ public class Items {
                 String movie = tokenizer.nextToken();
                 String genres = tokenizer.nextToken();
                 String [] attributes = getAttributes(movie, genres);
-                //System.out.println(id);
-                //System.out.println(Arrays.toString(attributes));
 
                 try {
                     client.createItemAsFuture(client.getCreateItemRequestBuilder(id, attributes));
