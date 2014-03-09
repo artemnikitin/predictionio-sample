@@ -1,6 +1,8 @@
 package sample;
 
 import io.prediction.Client;
+import io.prediction.CreateItemRequestBuilder;
+import io.prediction.CreateUserRequestBuilder;
 import sample.model.TestData;
 import org.apache.commons.io.FileUtils;
 import utility.Config;
@@ -14,11 +16,13 @@ import java.util.concurrent.ExecutionException;
 
 public class Load {
 
-    private static final String url = Config.getApiUrl();
-    private static final String key = Config.getApiKey();
+    static Config config = new Config();
+    private static final String url = config.getApiUrl();
+    private static final String key = config.getApiKey();
 
     public static void main(String[] args) throws InterruptedException, ExecutionException, IOException {
-        TestData data = GenerateData.asCSV(10000, 150, 15);
+        GenerateData gd = new GenerateData();
+        TestData data = gd.asCSV(10000, 150, 15);
         loadFromCSV(data);
     }
 
@@ -43,13 +47,13 @@ public class Load {
         if(users.size() > 0 && items.size() > 0 && data.size() > 0){
             int counter = 0;
             for(String user: users){
-                client.createUser(user);
+                client.createUserAsFuture(client.getCreateUserRequestBuilder(user));
                 counter++;
                 System.out.println("User created "+counter+" from "+users_length);
             }
             counter = 0;
             for(String item: items){
-                client.createItem(item, attr);
+                client.createItemAsFuture(client.getCreateItemRequestBuilder(item, attr));
                 counter++;
                 System.out.println("Item created "+counter+" from "+items_length);
             }

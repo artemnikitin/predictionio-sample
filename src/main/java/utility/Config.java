@@ -6,7 +6,7 @@ import java.util.Properties;
 public class Config {
 	
 	private static Properties defaultProps = new Properties();
-	  static {
+	static {
 	    try {
 	        FileInputStream in = new FileInputStream("app.properties");
 	        defaultProps.load(in);
@@ -14,29 +14,29 @@ public class Config {
 	    } catch (Exception e) {
 	       e.printStackTrace();         
 	    }
-	  }	    
+	}
 	  
-	private static String getProperty(String key) {
+	private String getProperty(String key) {
         return defaultProps.getProperty(key);
     }
 
-    public static String getApiUrl(){
+    public String getApiUrl(){
         return getProperty("default.api.url");
     }
 
-    public static String getApiKey(){
+    public String getApiKey(){
         return getProperty("default.api.key");
     }
 
-    public static String getRecEngine(){
+    public String getRecEngine(){
         return getProperty("default.recengine");
     }
 
-    public static String getSimEngine(){
+    public String getSimEngine(){
         return getProperty("default.simengine");
     }
 
-    public static String pathToMovieLensData(){
+    public String pathToMovieLensData(){
         return getProperty("data.movielens");
     }
 	  

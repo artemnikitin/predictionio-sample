@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Files {
 
-    public static List<String> processFileWithData(String path){
+    public List<String> processFileWithData(String path){
         List<String> data;
         try {
             data = FileUtils.readLines(new File(path), "UTF-8");

@@ -14,17 +14,18 @@ import java.util.concurrent.ExecutionException;
 
 public class Recommendations {
 
-    private static final String url = Config.getApiUrl();
-    private static final String key = Config.getApiKey();
+    private static final Config config = new Config();
+    private static final String url = config.getApiUrl();
+    private static final String key = config.getApiKey();
 
     public static void main(String[] args){
+        getUserInfo("1");
+        System.out.println("----------");
         getRecommendation("1", 5);
         System.out.println("----------");
-        getRecommendation("1", 5, new String[]{"genre=Drama"});
+        getItemInfo("1");
         System.out.println("----------");
         getSimilarItem("1", 5);
-        System.out.println("----------");
-        getSimilarItem("1", 5, new String[]{"genre=Drama"});
     }
 
     private static void getRecommendation(String user, int numOfRec){
@@ -33,12 +34,12 @@ public class Recommendations {
         client.identify(user);
         String[] recommendations;
         try{
-            recommendations = client.getItemRecTopN(Config.getRecEngine(), numOfRec);
+            recommendations = client.getItemRecTopN(config.getRecEngine(), numOfRec);
         } catch(Exception e){
             recommendations = new String[0];
         }
         System.out.println("For user "+user);
-        System.out.println("Recommendations will be: "+user);
+        System.out.println("Recommendations will be: ");
         if(recommendations.length > 0){
             for(String rec: recommendations){
                 getItemInfo(rec);
@@ -55,13 +56,13 @@ public class Recommendations {
         Client client = new Client(key, url);
         String[] recommendations;
         try{
-            recommendations = client.getItemSimTopN(Config.getSimEngine(), item, numOfSim);
+            recommendations = client.getItemSimTopN(config.getSimEngine(), item, numOfSim);
         } catch (Exception e){
             recommendations = new String[0];
         }
         System.out.println("For item "+item);
         getItemInfo(item);
-        System.out.println("Similar item is: ");
+        System.out.println("Similar item will be: ");
         if(recommendations.length > 0){
             for(String rec: recommendations){
                 getItemInfo(rec);
@@ -73,57 +74,22 @@ public class Recommendations {
         System.out.println("Total execution time " + (System.currentTimeMillis() - start) + " ms");
     }
 
-    private static void getRecommendation(String user, int numOfRec, String[] attr){
-        long start = System.currentTimeMillis();
-        Client client = new Client(key, url);
-        client.identify(user);
-        Map<String, String[]> recommendations;
-        try{
-            recommendations = client.getItemRecTopNWithAttributes(Config.getRecEngine(), numOfRec, attr);
-        } catch(Exception e){
-            recommendations = new HashMap<String, String[]>();
-        }
-        if(recommendations.size() > 0){
-            Set<String> keys = recommendations.keySet();
-            for(String key: keys){
-                System.out.println("Similar item is "+key);
-                System.out.println(Arrays.toString(recommendations.get(key)));
-            }
-        }else{
-            System.out.println("Sorry. We can't find recommendations.");
-        }
-        client.close();
-        System.out.println("Total execution time " + (System.currentTimeMillis() - start) + " ms");
-    }
-
-    private static void getSimilarItem(String item, int numOfSim, String[] attr){
-        long start = System.currentTimeMillis();
-        Client client = new Client(key, url);
-        Map<String, String[]> recommendations;
-        try{
-            recommendations = client.getItemSimTopNWithAttributes(Config.getSimEngine(), item, numOfSim, attr);
-        } catch (Exception e){
-            recommendations = new HashMap<String, String[]>();
-        }
-        if(recommendations.size() > 0){
-            Set<String> keys = recommendations.keySet();
-            for(String key: keys){
-                System.out.println("Similar item is "+key);
-                System.out.println(Arrays.toString(recommendations.get(key)));
-            }
-        }else{
-            System.out.println("Sorry. We can't find similar items.");
-        }
-        client.close();
-        System.out.println("Total execution time " + (System.currentTimeMillis() - start) + " ms");
-    }
-
-    private static void getItemInfo(String item){
+    private static void getItemInfo(String id){
         Client client = new Client(key, url);
         try {
-            Item newItem = client.getItem(item);
-            System.out.println(newItem.getIid());
-            System.out.println(Arrays.toString(newItem.getItypes()));
+            Item item = client.getItem(id);
+            System.out.println(item.getIid() + "  " + Arrays.toString(item.getItypes()));
+        } catch (ExecutionException | InterruptedException | IOException e) {
+            e.printStackTrace();
+        }
+        client.close();
+    }
+
+    private static void getUserInfo(String id){
+        Client client = new Client(key, url);
+        try {
+            User user = client.getUser(id);
+            System.out.println(user.getUid());
         } catch (ExecutionException | InterruptedException | IOException e) {
             e.printStackTrace();
         }

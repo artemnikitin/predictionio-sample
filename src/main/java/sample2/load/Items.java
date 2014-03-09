@@ -7,11 +7,12 @@ import utility.Files;
 import java.io.IOException;
 import java.util.*;
 
-public class Items {
+public class Items extends Files {
 
+    private final Config config = new Config();
     private final String path;
-    private final String url = Config.getApiUrl();
-    private final String key = Config.getApiKey();
+    private final String url = config.getApiUrl();
+    private final String key = config.getApiKey();
 
     public Items(String path){
         this.path = path;
@@ -19,7 +20,7 @@ public class Items {
 
     public void load(){
         long start = System.currentTimeMillis();
-        List<String> data = Files.processFileWithData(path);
+        List<String> data = processFileWithData(path);
         uploadData(data);
         System.out.println("Total execution time " + (System.currentTimeMillis() - start) + " ms");
     }
@@ -36,7 +37,6 @@ public class Items {
                 String movie = tokenizer.nextToken();
                 String genres = tokenizer.nextToken();
                 String [] attributes = getAttributes(movie, genres);
-
                 try {
                     client.createItemAsFuture(client.getCreateItemRequestBuilder(id, attributes));
                     counter++;
@@ -44,7 +44,6 @@ public class Items {
                 } catch (IOException e) {
                     System.out.println("Creating item "+id+" fails with error "+e.getMessage());
                 }
-
             }
             client.close();
         }else{

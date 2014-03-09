@@ -5,8 +5,9 @@ import utility.Config;
 
 public class GetRecommendation {
 
-    private static final String url = Config.getApiUrl();
-    private static final String key = Config.getApiKey();
+    static Config config = new Config();
+    private static final String url = config.getApiUrl();
+    private static final String key = config.getApiKey();
 
     public static void main(String[] args){
         getRecommendation("76366973223", 5);
@@ -20,7 +21,7 @@ public class GetRecommendation {
         client.identify(user);
         String[] recommendations;
         try{
-            recommendations = client.getItemRecTopN(Config.getRecEngine(), numOfRec);
+            recommendations = client.getItemRecTopN(config.getRecEngine(), numOfRec);
         } catch(Exception e){
             recommendations = new String[0];
         }
@@ -40,7 +41,7 @@ public class GetRecommendation {
         Client client = new Client(key, url);
         String[] recommendations;
         try{
-            recommendations = client.getItemSimTopN(Config.getSimEngine(), item, numOfSim);
+            recommendations = client.getItemSimTopN(config.getSimEngine(), item, numOfSim);
         } catch (Exception e){
             recommendations = new String[0];
         }

@@ -9,11 +9,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class U2I {
+public class U2I extends Files {
 
+    private final Config config = new Config();
     private final String path;
-    private final String url = Config.getApiUrl();
-    private final String key = Config.getApiKey();
+    private final String url = config.getApiUrl();
+    private final String key = config.getApiKey();
 
     public U2I(String path){
         this.path = path;
@@ -21,7 +22,7 @@ public class U2I {
 
     public void load(){
         long start = System.currentTimeMillis();
-        List<String> data = Files.processFileWithData(path);
+        List<String> data = processFileWithData(path);
         uploadData(data);
         System.out.println("Total execution time " + (System.currentTimeMillis() - start) + " ms");
     }
@@ -36,7 +37,6 @@ public class U2I {
                 String user = tokenizer.nextToken();
                 String movie = tokenizer.nextToken();
                 int rating = Integer.parseInt(tokenizer.nextToken());
-
                 try {
                     client.identify(user);
                     client.userActionItemAsFuture(client.getUserActionItemRequestBuilder("rate", movie).rate(rating));
@@ -45,7 +45,6 @@ public class U2I {
                 } catch (IOException | UnidentifiedUserException e) {
                     System.out.println("Creating u2i " + user + " " + movie + " fails with error " + e.getMessage());
                 }
-
             }
             client.close();
         }else{

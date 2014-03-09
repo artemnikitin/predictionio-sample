@@ -7,9 +7,10 @@ import utility.Config;
 
 public class Upload {
 
-    private static final String users = Config.pathToMovieLensData() + "users.dat";
-    private static final String items = Config.pathToMovieLensData() + "movies.dat";
-    private static final String interactions = Config.pathToMovieLensData() + "ratings.dat";
+    private static final Config config = new Config();
+    private static final String users = config.pathToMovieLensData() + "users.dat";
+    private static final String items = config.pathToMovieLensData() + "movies.dat";
+    private static final String interactions = config.pathToMovieLensData() + "ratings.dat";
 
     public static void main(String[] args){
         User user = new User(users);

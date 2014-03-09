@@ -9,9 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class GenerateData {
+public class GenerateData extends RandomGeneration {
 
-    public static TestData asCSV(int numberOfUsers, int numberOfItems, int itemsPerUser){
+    public GenerateData(){ }
+
+    public TestData asCSV(int numberOfUsers, int numberOfItems, int itemsPerUser){
         long start = System.currentTimeMillis();
         List<String> result = new ArrayList<String>();
         List<String> users = new ArrayList<String>();
@@ -22,7 +24,7 @@ public class GenerateData {
         for(int i = 0; i < numberOfUsers; i++){
             StringBuilder sb = new StringBuilder();
             sb.append(prefix);
-            sb.append(RandomGeneration.randomNumberWithoutNull(10));
+            sb.append(randomNumberWithoutNull(10));
             users.add(sb.toString());
         }
 

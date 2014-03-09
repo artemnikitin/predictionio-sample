@@ -13,11 +13,11 @@ public class TestData {
         this.items = items;
     }
 
-    public static List<String> getUsers() {
+    public List<String> getUsers() {
         return users;
     }
 
-    public static List<String> getItems() {
+    public List<String> getItems() {
         return items;
     }
 
