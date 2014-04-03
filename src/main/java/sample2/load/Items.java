@@ -1,6 +1,7 @@
 package sample2.load;
 
 import io.prediction.Client;
+import io.prediction.CreateItemRequestBuilder;
 import utility.Config;
 import utility.Files;
 
@@ -36,7 +37,7 @@ public class Items extends Files {
                 String id = tokenizer.nextToken();
                 String movie = tokenizer.nextToken();
                 String genres = tokenizer.nextToken();
-                String [] attributes = getAttributes(movie, genres);
+                String[] attributes = getAttributes(movie, genres);
                 try {
                     client.createItemAsFuture(client.getCreateItemRequestBuilder(id, attributes));
                     counter++;
@@ -52,19 +53,21 @@ public class Items extends Files {
     }
 
     private String[] getAttributes(String movie, String genres){
+        List<String> result = new ArrayList<>();
+        String[] temp = splitNameAndYear(movie);
+        result.add(0, temp[0]);
+        result.add(1, temp[1]);
         StringTokenizer tokenizer = new StringTokenizer(genres, "|");
-        String[] mg = new String[tokenizer.countTokens()];
-        int i = 0;
         while(tokenizer.hasMoreElements()){
-            mg[i] = tokenizer.nextToken();
-            i++;
+            result.add(tokenizer.nextToken());
         }
-        String[] result = new String[mg.length + 1];
-        result[0] = movie;
-        for(i = 1; i < result.length; i++){
-            result[i] = "genre="+mg[i - 1];
-        }
-        return result;
+        return result.toArray(new String[result.size()]);
+    }
+
+    private String[] splitNameAndYear(String movie){
+        String name = movie.substring(0, movie.length() - 7);
+        String year = movie.substring(movie.length() - 6, movie.length()).replace("(", "").replace(")", "");
+        return new String[]{name, year};
     }
 
 
